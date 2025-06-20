@@ -3,67 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Générateur Script GitHub Pages</title>
+    <title>Générateur Script GitHub Pages (V8 - Main Focus)</title>
     <style>
-        body { font-family: sans-serif; margin: 20px; background-color: #f4f4f4; color: #333; }
-        .container { background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        label { display: block; margin-top: 10px; font-weight: bold; }
-        input[type="text"] { width: calc(100% - 22px); padding: 10px; margin-top: 5px; border: 1px solid #ddd; border-radius: 4px; }
-        button { background-color: #007bff; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; margin-top: 20px; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 20px; background-color: #f4f7f6; color: #333; line-height: 1.6; }
+        .container { background-color: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 0 15px rgba(0,0,0,0.1); max-width: 800px; margin: 20px auto; }
+        label { display: block; margin-top: 15px; font-weight: bold; }
+        input[type="text"] { width: calc(100% - 24px); padding: 10px; margin-top: 5px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; font-size: 1em; }
+        button { background-color: #007bff; color: white; padding: 12px 18px; border: none; border-radius: 4px; cursor: pointer; margin-top: 25px; font-size: 1em; }
         button:hover { background-color: #0056b3; }
-        .output-section { margin-top: 30px; padding: 15px; background-color: #e9ecef; border-radius: 4px; }
-        .output-section h3 { margin-top: 0; color: #007bff; }
-        pre { background-color: #333; color: #f0f0f0; padding: 15px; border-radius: 4px; white-space: pre-wrap; word-wrap: break-word; font-family: monospace; }
-        .instructions ol { padding-left: 20px; }
-        .instructions li { margin-bottom: 8px; }
-        .copy-btn { margin-left: 10px; padding: 5px 8px; font-size: 0.8em; cursor: pointer;}
+        .output-section { margin-top: 30px; padding: 20px; background-color: #e9ecef; border-radius: 8px; border: 1px solid #dee2e6;}
+        .output-section h3 { margin-top: 0; color: #007bff; border-bottom: 1px solid #ced4da; padding-bottom: 8px; margin-bottom: 15px; }
+        pre { background-color: #2d2d2d; color: #f0f0f0; padding: 15px; border-radius: 5px; white-space: pre-wrap; word-wrap: break-word; font-family: 'Courier New', Courier, monospace; font-size: 0.95em; line-height: 1.5; }
+        .instructions ol, .instructions ul { padding-left: 25px; margin-top:10px;}
+        .instructions li { margin-bottom: 12px; line-height: 1.6;}
+        .copy-btn { margin-left: 15px; padding: 6px 10px; font-size: 0.85em; cursor: pointer; background-color: #6c757d; color:white; border:none; border-radius:3px; vertical-align: middle;}
+        .copy-btn:hover { background-color: #5a6268;}
+        .important { color: #dc3545; font-weight: bold; }
+        .note { font-size: 0.9em; color: #555; margin-bottom: 10px; display: block;}
+        code.inline-code { background-color: #f8f9fa; border: 1px solid #dee2e6; padding: 2px 5px; border-radius: 3px; color: #c7254e; font-family: 'Courier New', Courier, monospace;}
+
+        @media (max-width: 768px) {
+            body { margin: 10px; }
+            .container { padding: 15px; }
+            h1 { font-size: 1.5em; }
+            h3 { font-size: 1.1em; }
+            input[type="text"], button { font-size: 0.95em; }
+            pre { font-size: 0.85em; }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Générateur de Script pour Déploiement GitHub Pages</h1>
+        <p class="note">Cet outil vous aidera à générer les commandes pour publier un nouveau projet sur GitHub Pages. Remplissez les champs et suivez les instructions générées.</p>
 
         <label for="localPath">Chemin complet du dossier local de votre projet :</label>
         <input type="text" id="localPath" placeholder="/Users/votreNom/Documents/MonProjet">
 
-        <label for="repoName">Nom du dépôt sur GitHub (ex: mon-projet-cool):</label>
+        <label for="repoName">Nom du dépôt à créer sur GitHub (ex: mon-projet-cool):</label>
         <input type="text" id="repoName" placeholder="mon-projet-cool">
 
         <label for="githubUser">Votre nom d'utilisateur GitHub :</label>
         <input type="text" id="githubUser" placeholder="VotreLoginGitHub">
         
         <label for="commitMessage">Message pour le premier commit :</label>
-        <input type="text" id="commitMessage" value="Commit initial du projet">
+        <input type="text" id="commitMessage" value="Initial commit">
 
         <button onclick="generateScript()">Générer le Script et les Instructions</button>
 
         <div id="output" style="display:none;">
             <div class="output-section instructions">
-                <h3>Partie 1 : Sur GitHub.com</h3>
+                <h3>Partie 1 : Création du Dépôt sur GitHub.com</h3>
                 <ol>
-                    <li>Allez sur <a href="https://github.com/new" target="_blank">https://github.com/new</a>.</li>
-                    <li><strong>Repository name :</strong> Entrez "<span id="ghRepoName1"></span>".</li>
+                    <li>Allez sur <a href="https://github.com/new" target="_blank" rel="noopener noreferrer">https://github.com/new</a> pour créer un nouveau dépôt.</li>
+                    <li><strong>Repository name :</strong> Entrez "<span id="ghRepoName1" class="important"></span>".</li>
                     <li>Assurez-vous que "Public" est sélectionné.</li>
-                    <li><span style="color:red; font-weight:bold;">NE COCHEZ PAS</span> "Initialize this repository with a README".</li>
+                    <li><span class="important">NE COCHEZ AUCUNE CASE</span> d'initialisation ("Initialize this repository with a README", "Add .gitignore", "Choose a license"). Laissez le dépôt vide.</li>
                     <li>Cliquez sur "Create repository".</li>
-                    <li>Sur la page suivante du dépôt, copiez l'URL HTTPS (elle ressemblera à <code>https://github.com/<span id="ghUser1"></span>/<span id="ghRepoName2"></span>.git</code>). Vous en aurez besoin pour le script terminal.</li>
+                    <li>Sur la page suivante (celle avec "Quick setup... or create a new repository on the command line"), repérez et copiez l'URL HTTPS. Elle ressemblera à : <br><code class="inline-code">https://github.com/<span id="ghUser1" class="important"></span>/<span id="ghRepoName2" class="important"></span>.git</code><br>Vous utiliserez cette URL exacte dans le script terminal ci-dessous (elle sera aussi pré-remplie).</li>
                 </ol>
             </div>
 
             <div class="output-section">
-                <h3>Partie 2 : Commandes pour votre Terminal <button class="copy-btn" onclick="copyToClipboard('terminalCommands')">Copier</button></h3>
+                <h3>Partie 2 : Commandes pour votre Terminal <button class="copy-btn" onclick="copyToClipboard('terminalCommands')">Copier Script</button></h3>
+                <p class="note">Ouvrez votre Terminal (ou Git Bash sur Windows). Copiez TOUT le bloc de commandes ci-dessous et collez-le dans votre terminal. Les commandes s'exécuteront les unes après les autres si votre terminal le permet (sinon, exécutez-les ligne par ligne).</p>
                 <pre id="terminalCommands"></pre>
             </div>
 
             <div class="output-section instructions">
-                <h3>Partie 3 : Sur GitHub.com (après le push)</h3>
+                <h3>Partie 3 : Activation de GitHub Pages (après le "push" réussi)</h3>
                 <ol>
-                    <li>Retournez à votre dépôt "<span id="ghRepoName3"></span>" sur GitHub.</li>
-                    <li>Allez dans "Settings" > "Pages".</li>
+                    <li>Retournez à votre dépôt "<span id="ghRepoName3" class="important"></span>" sur GitHub.com.</li>
+                    <li>Allez dans l'onglet "Settings" du dépôt.</li>
+                    <li>Dans le menu de gauche, cliquez sur "Pages" (sous "Code and automation").</li>
                     <li>Sous "Build and deployment" > "Source", sélectionnez "Deploy from a branch".</li>
-                    <li>Branche : sélectionnez <strong><code>main</code></strong>, Dossier : sélectionnez <strong><code>/(root)</code></strong>.</li>
+                    <li>Dans la section "Branch" :
+                        <ul>
+                            <li>Branche : sélectionnez <strong><code>main</code></strong>.</li>
+                            <li>Dossier : sélectionnez <strong><code>/(root)</code></strong>.</li>
+                        </ul>
+                    </li>
                     <li>Cliquez sur "Save".</li>
-                    <li>Attendez quelques minutes, puis rafraîchissez. L'URL de votre site apparaîtra.</li>
+                    <li>Attendez quelques minutes (typiquement 1-5 min). Rafraîchissez la page "Pages". L'URL de votre site publié (ex: <code>https://<votre_nom_utilisateur>.github.io/<nom_depot>/</code>) devrait apparaître, souvent dans un encadré vert.</li>
                 </ol>
             </div>
         </div>
@@ -74,62 +95,94 @@
             const localPath = document.getElementById('localPath').value.trim();
             const repoName = document.getElementById('repoName').value.trim();
             const githubUser = document.getElementById('githubUser').value.trim();
-            const commitMessage = document.getElementById('commitMessage').value.trim();
+            let commitMessage = document.getElementById('commitMessage').value.trim();
 
-            if (!localPath || !repoName || !githubUser || !commitMessage) {
-                alert("Veuillez remplir tous les champs !");
+            if (!localPath || !repoName || !githubUser) {
+                alert("Veuillez remplir le chemin local, le nom du dépôt et votre nom d'utilisateur GitHub !");
+                return;
+            }
+            if (!commitMessage) {
+                commitMessage = `Initial commit for ${repoName}`; // Message par défaut si vide
+            }
+
+            // Valider le nom du dépôt (simple validation pour éviter les espaces)
+            if (/\s/.test(repoName)) {
+                alert("Le nom du dépôt GitHub ne doit pas contenir d'espaces. Utilisez des tirets (-) ou des underscores (_).");
                 return;
             }
 
+
             const githubRepoUrl = `https://github.com/${githubUser}/${repoName}.git`;
 
+            // Mise à jour des spans dans les instructions HTML
             document.getElementById('ghRepoName1').textContent = repoName;
             document.getElementById('ghUser1').textContent = githubUser;
             document.getElementById('ghRepoName2').textContent = repoName;
             document.getElementById('ghRepoName3').textContent = repoName;
             
-            const scriptContent = `
-# Naviguez vers votre dossier de projet
+            const scriptContent = `echo "--- Début du script d'automatisation ---"
+
+# 1. Naviguer vers votre dossier de projet local
+echo "Navigation vers : ${localPath}"
 cd "${localPath}"
 
-# Initialiser Git (si pas déjà fait)
+# 2. Initialiser Git (ne fait rien si déjà un dépôt Git)
+echo "Initialisation de Git..."
 git init
 
-# (Optionnel) Renommer la branche en 'main' si elle s'appelle 'master'
-# Vérifiez d'abord le nom de votre branche actuelle avec: git branch
-# Si elle est 'master', exécutez:
-# git branch -m master main
+# 3. S'assurer que la branche principale s'appelle 'main'
+echo "Configuration de la branche principale en 'main'..."
+git branch -M main
 
-# Ajouter tous les fichiers
+# 4. Ajouter tous les fichiers du projet à l'index Git
+echo "Ajout des fichiers..."
 git add .
 
-# Faire le premier commit
+# 5. Faire le premier commit (instantané des fichiers)
+echo "Création du commit initial..."
 git commit -m "${commitMessage}"
 
-# Lier au dépôt distant sur GitHub (COLLEZ L'URL HTTPS DE VOTRE DÉPÔT ICI SI DIFFÉRENTE)
+# 6. Lier votre dépôt local au dépôt distant sur GitHub
+echo "Liaison au dépôt distant : ${githubRepoUrl}"
+# Supprimer 'origin' s'il existe déjà pour éviter une erreur
+git remote remove origin 2>/dev/null || true 
 git remote add origin ${githubRepoUrl}
-# Si 'origin' existe déjà et pointe vers un autre dépôt, vous devrez peut-être le supprimer d'abord:
-# git remote remove origin 
-# puis ré-exécutez la commande git remote add origin ... ci-dessus.
 
-# Envoyer les fichiers vers GitHub
+# 7. Envoyer (push) vos fichiers locaux vers la branche 'main' sur GitHub
+echo "Envoi des fichiers vers GitHub (branche 'main')..."
+echo "Il vous sera demandé votre nom d'utilisateur GitHub PUIS votre Personal Access Token (PAT) comme mot de passe."
 git push -u origin main
-# Quand demandé:
-# Username: ${githubUser}
-# Password: VOTRE_PERSONAL_ACCESS_TOKEN (PAT)
+
+echo "--- Script Terminal Terminé ---"
+echo "Si le 'push' a réussi, passez à la Partie 3 sur GitHub.com pour activer GitHub Pages."
             `;
 
             document.getElementById('terminalCommands').textContent = scriptContent.trim();
             document.getElementById('output').style.display = 'block';
+            // Scroll vers la section output pour la visibilité
+            document.getElementById('output').scrollIntoView({ behavior: 'smooth' });
         }
 
         function copyToClipboard(elementId) {
             const textToCopy = document.getElementById(elementId).textContent;
             navigator.clipboard.writeText(textToCopy).then(function() {
-                alert('Commandes copiées dans le presse-papiers !');
+                alert('Script copié dans le presse-papiers ! Collez-le dans votre terminal.');
             }, function(err) {
-                alert('Erreur lors de la copie. Veuillez copier manuellement.');
-                console.error('Erreur copie: ', err);
+                try {
+                    const textArea = document.createElement("textarea");
+                    textArea.value = textToCopy;
+                    textArea.style.position = "fixed"; // Empêche le scroll
+                    textArea.style.opacity = "0";
+                    document.body.appendChild(textArea);
+                    textArea.focus();
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    alert('Script copié dans le presse-papiers ! (fallback) Collez-le dans votre terminal.');
+                } catch (e_fallback) {
+                    alert('Erreur lors de la copie. Veuillez copier manuellement le bloc de commandes.');
+                    console.error('Erreur copie: ', err, e_fallback);
+                }
             });
         }
     </script>
